@@ -1,5 +1,138 @@
-.product-tab {
+/* All !important will override bootstrap styling */
+
+/* All text on the page outside of the header and footer */
+html {
+    font-family: 'Liberation Sans', sans-serif;
+}
+
+/* Sets body background colour to a very slighty green white */
+body {
+    background-color: rgb(241, 252, 241) !important;
+
+}
+
+/* The container for the header, image is underneath the navbar, it is revealed by padding */
+.header {
+    background-image: url("../images/headerbackground.jpg");
+    background-size: cover;
+    /* Sets colour of title, not links */
+    color: white;
+    padding-top: 100px;
+    font-family: 'Komika Hand', sans-serif;
+    position: relative;
+    /*Position relative so logo will sit inside it*/
+}
+
+/* Contains the title, and gives a background for it */
+.title {
+    text-align: center;
+    background-color: rgb(3, 59, 3);
+    font-size: 30px;
+}
+
+/* bootstrap container */
+.navbar {
+    background-color: rgb(3, 59, 3);
+}
+
+/* Makes links white */
+.navbar a {
+    color: white;
+}
+
+/* Keeps active link white */
+.active {
+    color: white !important;
+    text-decoration: underline !important;
+}
+
+/* Keeps link white on hover */
+.navbar a:hover {
+    color: white !important;
+    text-decoration: underline !important;
+}
+
+h2 {
+    text-align: center;
+}
+
+/* This adds padding to the form input boxes in enquiry.html */
+.form-group.row {
+    padding-top: 14px;
+}
+
+/*Position is absolute to make it sit inside header container, is set to bottom left with left: 16px bottom: 15px. If changed it clips the title*/
+.logo {
+    position: absolute;
+    bottom: 15px;
+    left: 16px;
+    height: 100px;
+    z-index: 1;
+    /*z index above the background of title and navbar*/
+    background-color: rgb(3, 59, 3);
+    border-radius: 10%;
+}
+
+/* Narrows website to 75%, on very large viewports this is capped at 1000px wide */
+.bodyContent {
+    width: 75%;
+    margin: auto;
+    max-width: 1000px;
+}
+
+/* This is the text below the navbar */
+.introQuote {
+    margin: auto;
+    text-align: center;
+    padding-top: 20px;
+}
+
+/* Used for the large paragraphs on pages */
+.introParagraph {
+    padding: 3%;
+}
+
+/* Prevents the image on the homepage from extending outside the div */
+.homeImage img {
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.homeTestimonials {
+    text-align: center;
+}
+
+/* Prevents images from extending outside their divs */
+.aboutImage {
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Removes bulletpoints on about page */
+ul {
+    list-style: none;
+    padding-top: 20px;
+}
+
+/* Padding bottom stops the address touching the bottom of the page, it extends down more than the others on smaller viewports */
+footer {
+    background-color: #174418;
+    color: white;
+    font-family: 'Komika Hand', sans-serif;
+    padding-bottom: 20px;
+}
+
+/* Adds spacing around the social media icons */
+svg {
+    margin: 5px;
+}
+
+.tab {
     background-color: green;
-    color: green;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 5px;
 }
 
