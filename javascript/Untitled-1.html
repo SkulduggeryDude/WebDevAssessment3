@@ -1,0 +1,47 @@
+
+    <div class="cards">
+    <div class="row row-cols-1 row-cols-md-3">
+      <div class="col" v-for="(card, index) in cards" :key="index">
+        <div class="card text-center text-bg-success border-success mb-3" style="max-width: 18rem; border-width: 10px; margin:auto">
+          <img :src="card.image" class="card-img-top" :alt="card.alt">
+          <div class="card-body">
+            <h5 class="card-title">{{ card.title }}</h5>
+            <p class="card-text">{{ card.description }}</p>
+            <p v-if="inStock">In Stock</p>
+            <p v-else>Out of Stock</p>
+            <p>Shipping: {{ shipping }}</p>
+            <button @click="addToCart" :disabled="!inStock">Add to Cart</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+    
+  <p class="product-tabs">
+  <span class="tab" v-on:click="selectedTab = 'reviews'">Reviews</span>
+  <span class="tab" v-on:click="selectedTab = 'add-review'">Add Review</span>
+</p>    
+
+<div v-show="selectedTab === 'reviews'" class="product-reviews">
+  <h2>Product Reviews</h2>
+  <ul
+      <li v-for="review in reviews">
+      <p>{{review.name}} says:</p>
+      <p>{{review.review}}</p>
+      </li>
+  </ul>
+</div>
+
+<div v-show="selectedTab === 'add-review'" class="review-form">
+  <h3>leave a review</h3>
+  <form v-on:submit.prevent="submitReview">
+      <label for="name">Name:</label>
+      <input type="text" id="name" v-model="newReview.name" required>
+
+      <label for="review">Review:</label>
+      <textarea id="review" v-model="newReview.review" required></textarea>
+      <button type="submit">Submit</button>
+      </form>
+      </div>

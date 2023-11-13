@@ -52,8 +52,9 @@ body {
     text-decoration: underline !important;
 }
 
-h2 {
+h2, h3 {
     text-align: center;
+    padding: 5px;
 }
 
 /* This adds padding to the form input boxes in enquiry.html */
@@ -131,7 +132,9 @@ svg {
 
 
 
-
+p {
+    margin: 5px !important;
+}
 
 /*CSS for vue*/
 .tab {
@@ -141,3 +144,11 @@ svg {
     padding: 5px;
 }
 
+.product {
+    color: white !important;
+    list-style-type: none;
+}
+
+form {
+    padding: 5px;
+}
