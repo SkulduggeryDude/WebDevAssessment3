@@ -1,4 +1,3 @@
-
 Vue.component('product', {
     props: {
         premium: {
