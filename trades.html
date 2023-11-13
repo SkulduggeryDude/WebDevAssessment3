@@ -65,6 +65,15 @@
       Items for trade
     </h5>
     <hr class="border border-success border-2 opacity-100">
+
+    <div id="app">
+      <!-- Include the product component here -->
+<product :premium="premium"></product>
+
+</div>
+
+
+
     <!-- Cards are used for all products on website -->
     <div class="cards">
       <!-- Creating a grid for a 3 column layout for each card with md-3, row-cols-1 on small viewport -->
@@ -208,5 +217,7 @@
       </div>
     </div>
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+  <script src="./javascript/main.js"></script>
 </body>
 </html>
