@@ -74,7 +74,7 @@ Vue.component('product', {
                     alt: 'Holographic Charizard',
                     title: 'Holographic Charizard',
                     description: '1999 Pokemon Game Charizard Holo 1st Edition',
-                    stock: 1
+                    stock: 3
                 },
                 {
                     image: './images/blacklotus.jpg',
