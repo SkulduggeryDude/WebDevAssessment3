@@ -11,10 +11,11 @@ Vue.component('product', {
 
             <div class="cart card text-bg-success bg-success mb-3">
                 <p>Cart: {{ cart }}</p>
+                <p>Total: \${{cartTotal}}</p>
                 <p>Items:</p>
                 <ul
                     <li v-for="(card,index) in cartItems">
-                    <p>{{card.title}}</p> <button @click="removeFromCart(index)">Remove</button>
+                    <p>{{card.title}} \${{card.price}} <button @click="removeFromCart(card.price,index)">Remove</button></p>
                     </li>
                 </ul>
             </div>
@@ -30,7 +31,7 @@ Vue.component('product', {
                                 <p v-if="card.stock">In Stock: {{card.stock}}</p>
                                 <p v-else>Out of Stock</p>
                                 <p>Shipping: {{ shipping }}</p>
-                                <button @click="addToCart(card.title)" :disabled="card.stock<1">Add to Cart</button>
+                                <button @click="addToCart(card.title,card.price)" :disabled="card.stock<1">Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -74,63 +75,72 @@ Vue.component('product', {
                     alt: 'Holographic Charizard',
                     title: 'Holographic Charizard',
                     description: '1999 Pokemon Game Charizard Holo 1st Edition',
-                    stock: 3
+                    stock: 3,
+                    price: 13,
                 },
                 {
                     image: './images/blacklotus.jpg',
                     alt: 'Black Lotus',
                     title: 'Black Lotus Alpha',
                     description: '1993 Magic the Gathering Black Lotus Alpha',
-                    stock: 1
+                    stock: 1,
+                    price: 12,
                 },
                 {
                     image: './images/aerodactyl.jpg',
                     alt: 'Holographic Aerodactyl',
                     title: 'Aerodactyl 1st Edition',
                     description: '1999 Pokemon Fossil Aerodactyl Holo 1st Edition',
-                    stock: 1
+                    stock: 1,
+                    price: 11,
                 },
                 {
                     image: './images/trophypikachu.jpg',
                     alt: 'Trophy Pikachu',
                     title: 'Trophy Pikachu Gold',
                     description: '1997 Trophy Pikachu Gold 1st - 1st Tournament',
-                    stock: 1
+                    stock: 1,
+                    price: 10,
                 },
                 {
                     image: './images/wigglytuff.jpg',
                     alt: 'Holographic Wigglytuff',
                     title: 'Holographic Wigglytuff',
                     description: '1999 Pokemon Jungle Wigglytuff Holo',
-                    stock: 1
+                    stock: 1,
+                    price: 13,
                 },
                 {
                     image: './images/magikarp.jpg',
                     alt: 'University Magikarp',
                     title: 'University Magikarp',
                     description: '1998 University Magikarp Tamamushi University Prize',
-                    stock: 1
+                    stock: 1,
+                    price: 13,
                 },
                 {
                     image: './images/gyarados.jpg',
                     alt: "Giovanni's Gyarados",
                     title: "Giovanni's Gyarados Holo 1st Edition",
                     description: "2000 Pokemon Gym Giovanni's Gyarados Holo 1st Edition",
-                    stock: 1
+                    stock: 1,
+                    price: 13,
                 },
                 {
                     image: './images/arcanine.jpg',
                     alt: 'Holographic Arcanine',
                     title: 'Holographic Arcanine',
                     description: "2000 Pokemon Gym Chal Blaine's Arcanine Holo 1st Edition",
-                    stock: 1
+                    stock: 1,
+                    price: 13,
                 },
                 {
                     image: './images/darkraichu.jpg',
                     alt: 'Dark Raichu',
                     title: 'Holographic Dark Raichu',
                     description: '2000 Pokemon Rocket Dark Raichu Holo 1st Edition',
-                    stock: 1
+                    stock: 1,
+                    price: 13,
                 }
             ],
             reviews: [{name: 'Thomas', review: 'This is a real review'}],
@@ -140,27 +150,31 @@ Vue.component('product', {
             },
             selectedTab: 'reviews',
             cart: 0,
+            cartTotal: 0,
             cartItems: [],
 
 
         };
     },
     methods: {
-        addToCart(title) {
+        addToCart(title,price) {
             this.cart++;
-            this.cartItems.push({title});
+            this.cartTotal += price;
+            this.cartItems.push({title,price});
             //index needs to match the current card, the order gets mixed up
             const index = this.cards.findIndex(card => card.title === title);
             this.cards[index].stock--; // Decrease the stock of the item
         },
-        removeFromCart(index){ 
+        removeFromCart(price,index){ 
             this.cart--;
             const removedItem = this.cartItems.splice(index, 1)[0]; // Remove item from cart
             // Find the index of the removed item in the cards array
             const cardIndex = this.cards.findIndex(card => card.title === removedItem.title);
             if (cardIndex !== -1) {
                 this.cards[cardIndex].stock++; // Increment the stock of the removed item
+                this.cartTotal -= this.cards[cardIndex].price;
             }
+            
         },
         submitReview() {
             if (this.newReview.name && this.newReview.review) {
