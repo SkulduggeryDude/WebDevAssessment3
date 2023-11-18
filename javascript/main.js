@@ -57,9 +57,9 @@ Vue.component('product', {
                     <h3>Leave a review</h3>
                     <form v-on:submit.prevent="submitReview">
                         <label for="name"><h5>Name:</h5></label>
-                        <input type="text" id="name" v-model="newReview.name" required>
+                        <input type="text" pattern="[A-Za-z]*" id="name" v-model="newReview.name" required>
                         <label for="review"><h5>Review:</h5></label>
-                        <textarea id="review" v-model="newReview.review" required></textarea>
+                        <textarea pattern="[A-Za-z]*" id="review" v-model="newReview.review" required></textarea>
                         <button type="submit">Submit</button>
                     </form>
             </div>
