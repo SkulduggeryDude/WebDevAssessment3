@@ -215,38 +215,81 @@ Vue.component('product', {
         removeFromCart(price,index){ 
             //removes cart amount by one
             this.cart--;
-            //
-            const removedItem = this.cartItems.splice(index, 1)[0]; // Remove item from cart
-            // Find the index of the removed item in the cards array
+            //We need to do two things, remove the item from the cart array and add one back to the items stock
+            //We keep note of the added item by assigning it to an array when we remove it from the list with .splice(thing to remove, amount to remove)
+            const removedItem = this.cartItems.splice(index, 1)[0]; //The [0] allows us to access what we removed
+            // Find the index of the removed item in the cards array by matching the title
             const cardIndex = this.cards.findIndex(card => card.title === removedItem.title);
-            if (cardIndex !== -1) {
-                this.cards[cardIndex].stock++; // Increment the stock of the removed item
-                this.cartTotal -= this.cards[cardIndex].price;
-            }
-            
+            //Now cardIndex is used to access the cards array, we add one to the stock
+            this.cards[cardIndex].stock++;
+            //and reduce the cartTotal by its price
+            this.cartTotal -= this.cards[cardIndex].price;           
         },
+        //This method is used to take the data that was assigned to the newReview variables and add it to the reviews array
         submitReview() {
+            //If the fields are full
             if (this.newReview.name && this.newReview.review) {
+                //add them to the end of the reviews array with push
                 this.reviews.push({ name: this.newReview.name, review: this.newReview.review });
+                //we set the fields back to empty as they are no longer needed
                 this.newReview.name = '';
                 this.newReview.review = '';
+                //we set the displayed tab to reviews to give confirmation the form submitted
                 this.selectedTab = 'reviews';
             }
         }
     },
+    //computed is just like methods but they dont need to be called, they are just {{variable}} in html but can be computed on other variables
     computed: {
         shipping() {
+            //The returned value is what will take the place of {{shipping}}
+            //Before that we also check that if the user is not premium, then the base cost will be 3 dollars for shipping, note it can do decimals
             if(!this.premium){
                 this.cartTotal = 3;
             }
+            //now we return a string to let the user know if they have free shipping or are being charged 3 dollars for it
             return this.premium ? ' Free shipping' : ' $3 shipping';
         }
     }
 });
 
+//The component above is packaged inside this vue object
 new Vue({
+    //This is the name of it
     el: '#app',
+    //Here we can add data to be passed to the components, if I had multiple components and an event bus I would have the cart and total cost in here for example
     data: {
+        //The users premimum status is set here
         premium: true
     }
 });
+
+/*
+Made by Thomas Karam 16448798
+⣦⡾⢃⣤⡿⠛⣒⡛⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⡐⢊⠉⢱⠖⣲⢤⣀⠀⠀⠀⠀⢠⡾⡗⡛⠒⠈⣤⣤⡀⠀⠀⠀
+⣻⣿⠿⢛⣣⠜⠸⣟⣿⡇⠀⠀⠀⡀⠀⠀⠀⣀⣤⣤⣶⣶⣿⠿⠿⠿⠿⠿⠿⣿⣶⣦⣍⡛⢻⣦⣄⠀⢼⡿⡇⠥⠙⢘⣹⣿⣟⠀⠀⠀
+⣿⣭⠘⣁⠀⠀⠀⢫⣩⡽⣦⠞⠉⣠⣴⣾⡿⠟⠛⠉⠉⢀⠀⠖⡌⠀⠀⠀⠁⠀⠈⠙⡻⢿⣶⣄⠙⢷⣞⣛⣧⣇⡤⣈⣿⣿⣿⠀⠀⠀
+⣿⡟⢸⣷⠀⣰⣾⣫⣭⡿⢛⣶⣿⠟⢋⠡⡐⢌⠱⣀⠠⢄⠢⢑⡈⢆⠑⣂⠒⡰⢄⠀⠀⠈⡙⢿⣿⣟⣿⡿⢻⣿⣿⣷⡿⠟⢟⠀⠀⠠
+⢸⣸⣹⣿⣼⣿⣿⣿⣷⣿⣿⣏⣰⡈⠢⣁⠃⠎⡰⢀⡃⠦⡘⠤⡘⢄⠣⢄⢣⠐⡌⢒⡀⢀⠜⣤⣿⠿⠉⠀⠀⢻⣿⣿⡅⠀⠈⡆⠀⣶
+⠈⢇⡦⣿⣿⣿⠏⠁⠩⢿⣿⠛⢿⣿⣿⣶⣬⣴⣁⣢⠘⢠⠑⣂⠱⣈⠒⡌⢢⠑⡌⠂⣌⣶⡿⢿⣿⣄⠀⠀⠀⠈⢿⣿⣿⣶⡍⠀⣀⠛
+⠀⠘⣿⠸⣿⣿⣦⣀⣔⣿⣿⣧⠀⢿⣿⡌⠙⠛⠻⠿⣿⣶⣮⣤⣒⡠⠑⢌⢂⠡⣨⣾⣿⣿⣇⠘⣿⣿⡄⠀⠀⠀⠘⣿⣿⣿⡧⣼⡇⠀
+⠀⠀⠸⣧⠹⣿⣿⣿⣿⣿⣿⣿⣇⠈⣿⣿⡄⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣶⣮⣾⣿⣿⣿⣿⣿⡔⠸⣿⣷⡀⠀⠀⠀⠸⣿⣿⢹⡟⠀⠀
+⠀⠀⠀⡿⢠⣿⣿⣿⣿⣿⣿⣿⣿⣆⠘⣿⣿⡀⠀⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡠⠹⣿⣷⠀⠀⠄⠀⣿⣟⣿⡇⠀⠀
+⠀⠀⠰⢙⣹⣿⠇⡠⠿⢿⣿⣿⣿⣿⡀⠹⣿⣧⠀⠀⠀⠀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⢿⣿⣇⠀⠀⢸⣿⡏⠹⣇⠀⠀
+⠀⠀⡈⠋⣿⡿⠐⡄⠣⢼⣿⣿⣿⣿⣿⡀⢹⣿⣧⠀⠀⠀⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠈⢿⣿⣆⢠⣿⠟⣿⣆⠙⣇⠀
+⢀⠒⢁⣾⡿⢃⠱⣈⠱⢠⢸⣿⣿⣿⣿⣷⠀⢿⣿⣆⠀⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠘⣿⣿⣾⡟⢠⠹⣿⡆⣿⢷
+⣾⣤⣿⠏⡁⠦⡑⢄⠃⢆⣹⣿⣿⣿⣿⣿⣧⠈⢿⣿⡄⠀⠀⠀⠘⣿⣿⣿⣿⣿⡿⣿⢿⣿⣿⣿⣿⣿⣿⣶⣾⣿⠏⡐⢂⠆⣿⣿⣹⣛
+⠿⣿⢋⡐⢌⠱⡈⠆⡹⢼⣿⣿⠣⡝⢿⣿⣿⣆⠘⣿⣿⡀⠀⢀⣤⣼⣿⠿⣋⠷⡘⢆⠣⢒⠰⡘⡐⢣⠍⠭⣉⠡⢂⠱⡈⣴⣿⡇⢿⣿
+⠀⣿⠠⢐⠊⡔⢡⠊⡵⢫⣿⣧⢫⠜⣣⣮⡻⢿⣷⣾⣿⣷⣾⡿⢟⡹⢢⠝⡨⠑⢌⠂⠓⡌⢲⡄⣉⠒⡌⢒⣠⣥⣮⣶⣿⡿⢋⣰⠾⠡
+⠙⣿⢀⠃⣍⠰⡁⢎⡵⢋⣿⣟⠠⢉⣾⣿⠋⠶⣩⢛⠿⢫⠕⡊⠇⡉⢆⡘⠤⡉⠜⣿⠔⡠⢛⠡⣄⣶⣾⣿⠿⠟⢛⣿⡿⠲⣾⠋⠀⠐
+⠀⢹⠀⠎⡄⢣⠘⣬⢚⡥⣿⣿⠀⡙⣿⣷⣌⡐⠠⠉⠌⢡⢘⣀⣣⣬⣤⣶⣴⣧⣮⣤⣶⣤⣷⣾⡿⠟⠋⣄⠢⣩⣾⣟⣱⡾⠃⠀⠀⠀
+⠀⢈⠘⡰⠘⡄⠳⣌⢳⡘⣿⣿⢀⠡⠌⠻⠿⣿⣿⣿⣿⣿⡿⠿⠿⢛⠛⠛⠛⠛⠛⠛⡛⠿⢛⠩⠐⢌⢒⣠⣾⣿⣯⣍⡉⠅⠂⡀⠀⠀
+⠀⠀⠐⡡⢃⢌⡳⣌⢧⡙⣿⣯⢀⠃⢎⡑⢢⠐⡄⢢⠐⠤⡐⢢⠑⡌⠬⠡⢍⠊⢅⠣⢐⠂⣡⣊⣵⣾⣿⠟⠻⣿⣏⠻⢿⣷⣤⡙⠲⣤
+⠀⠀⠘⡄⢃⢬⢳⡘⢦⡙⣿⣿⣿⣮⣄⣘⡠⢃⠘⠤⠉⠆⠱⡈⢆⠱⣈⣑⣈⣬⣴⣶⣿⣿⡿⢟⠛⡩⡔⠎⠁⠘⣿⣷⠠⠌⠻⣷⡘⣿
+⠀⠀⢈⠔⣩⠞⢦⡙⢦⣙⣿⣯⠘⡛⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⠿⠿⠿⢛⠻⣿⣯⠰⡐⢎⡱⠁⠌⠠⢁⠠⠘⣿⣧⠈⡅⢚⣿⣯
+⠀⠀⡐⢮⡱⢎⢧⡙⢦⢹⣿⡇⡱⢘⢆⠳⢄⠢⡔⡰⠢⢔⠢⡔⡒⡔⢪⡑⠎⡥⢊⠽⣿⣇⠉⡀⠄⡐⢈⠂⠂⢀⣤⣿⣿⡆⡘⠌⣿⡧
+⠀⠀⡘⣇⢞⡩⢖⡹⣌⢻⣿⢃⡌⢣⠜⣌⢊⡕⠬⣑⠩⢆⡓⢬⡑⠬⠑⠌⢃⢈⠁⡀⢿⣿⡀⠄⠂⠀⣄⣠⣶⣿⡿⠛⣿⣇⠰⠁⣿⡗
+⠀⠀⠸⡜⢪⡕⡫⣔⢣⣿⡿⠐⠬⠡⠎⠰⠁⠎⠒⠁⡉⠂⠌⠀⠄⠂⠡⠈⠄⠂⠄⢀⣸⣿⣧⣴⣶⣿⡿⠿⠛⠁⢀⠀⣿⣯⠐⡁⣿⣟
+⠀⠀⠈⢉⣃⣞⣑⣬⣚⠛⠁⠀⠠⠁⠄⠂⣁⢀⡁⢌⠠⠅⠌⠰⠈⠤⠡⣒⣒⣛⣾⣛⣟⣿⣛⣯⣭⣥⣄⣠⣀⣤⡶⣴⣟⡃⠸⠴⡷⠋
+-Squirtle Squad
+*/
