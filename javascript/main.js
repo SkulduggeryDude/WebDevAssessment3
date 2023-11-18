@@ -12,6 +12,7 @@ Vue.component('product', {
             <div class="cart card text-bg-success bg-success mb-3">
                 <p>Cart: {{ cart }}</p>
                 <p>Total: \${{cartTotal}}</p>
+                <p>{{shipping}}
                 <p>Items:</p>
                 <ul
                     <li v-for="(card,index) in cartItems">
@@ -30,7 +31,6 @@ Vue.component('product', {
                                 <p class="card-text">{{card.description}}</p>
                                 <p v-if="card.stock">In Stock: {{card.stock}}</p>
                                 <p v-else>Out of Stock</p>
-                                <p>Shipping: {{ shipping }}</p>
                                 <button @click="addToCart(card.title,card.price)" :disabled="card.stock<1">Add to Cart</button>
                             </div>
                         </div>
@@ -187,7 +187,10 @@ Vue.component('product', {
     },
     computed: {
         shipping() {
-            return this.premium ? 'Free' : '$2.99';
+            if(!this.premium){
+                this.cartTotal = 3;
+            }
+            return this.premium ? ' Free shipping' : ' $3 shipping';
         }
     }
 });
